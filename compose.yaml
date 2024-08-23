@@ -1,0 +1,27 @@
+services:
+  dynamodb-local:
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: "dynamodb-local"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ".dynamodb_data:/home/dynamodblocal/data"
+    working_dir: "/home/dynamodblocal"
+    user:
+      root
+
+  webapp:
+    build: .
+    container_name: "webapp"
+    ports:
+      - "9090:9090"
+    depends_on:
+      - "dynamodb-local"
+    links:
+      - "dynamodb-local"
+    environment:
+      AWS_ACCESS_KEY_ID: 'FAKEKEYYYY'
+      AWS_SECRET_ACCESS_KEY: 'FAKEKEYYYY'
+      AWS_DEFAULT_REGION: 'us-east-2'
+      REGION: 'us-east-2'

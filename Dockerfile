@@ -15,5 +15,4 @@ COPY --from=builder --chown=app-user:app-user /app/artifact /app
 
 USER app-user
 
-# CMD ["python", "-m", "pdd.app"]
 CMD ["python", "-m", "flask", "--app", "pdd.app:app", "run", "-h", "0.0.0.0", "-p", "9090", "--with-threads"]
